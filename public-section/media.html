@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Gallery - Duhigure mu Miryango</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/siderbar.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <style>
+        .gallery-section {
+            padding: 60px 0;
+        }
+        
+        .gallery-filter {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .filter-btn {
+            padding: 8px 20px;
+            border: 2px solid var(--primary-color);
+            background: white;
+            color: var(--primary-color);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .gallery-item {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            background: white;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .gallery-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .gallery-info {
+            padding: 20px;
+        }
+        
+        .gallery-category {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .video-container iframe,
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .testimonial-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        
+        .testimonial-text {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+        
+        .load-more {
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .lightbox.active {
+            display: flex;
+        }
+        
+        .lightbox-img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="program-title">Media Gallery</h1>
+                <p class="program-subtitle">Photos, videos, and success stories from the Duhigure mu Miryango program</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <i class="fas fa-photo-video"></i>
+                <h3>Media</h3>
+            </div>
+            <span class="sidebar-subtitle">Gallery & Videos</span>
+        </div>
+        
+        <div class="sidebar-content">
+            <!-- Categories -->
+            <div class="sidebar-section">
+                <h4 class="sidebar-section-title">Categories</h4>
+                <ul class="sidebar-menu">
+                    <li><a href="#all" class="active" onclick="filterGallery('all')">
+                        <i class="fas fa-th"></i>
+                        <span>All Media</span>
+                    </a></li>
+                    <li><a href="#photos" onclick="filterGallery('photos')">
+                        <i class="fas fa-camera"></i>
+                        <span>Photos</span>
+                    </a></li>
+                    <li><a href="#videos" onclick="filterGallery('videos')">
+                        <i class="fas fa-video"></i>
+                        <span>Videos</span>
+                    </a></li>
+                    <li><a href="#stories" onclick="filterGallery('stories')">
+                        <i class="fas fa-newspaper"></i>
+                        <span>Success Stories</span>
+                    </a></li>
+                </ul>
+            </div>
+
+            <!-- Navigation Menu -->
+            <div class="sidebar-section">
+                <h4 class="sidebar-section-title">Navigation</h4>
+                <ul class="sidebar-menu">
+                    <li><a href="index.html">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a></li>
+                    <li><a href="about.html">
+                        <i class="fas fa-info-circle"></i>
+                        <span>About Program</span>
+                    </a></li>
+                    <li><a href="guide.html">
+                        <i class="fas fa-book"></i>
+                        <span>User Guide</span>
+                    </a></li>
+                    <li><a href="media.html" class="active">
+                        <i class="fas fa-photo-video"></i>
+                        <span>Media Gallery</span>
+                    </a></li>
+                    <li><a href="social.html">
+                        <i class="fas fa-share-alt"></i>
+                        <span>Social Feeds</span>
+                    </a></li>
+                    <li><a href="contact.html">
+                        <i class="fas fa-envelope"></i>
+                        <span>Contact Us</span>
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN NAVIGATION -->
+    <nav class="main-nav">
+        <div class="container nav-container">
+            <div class="nav-items">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home me-2"></i>Home
+                </a>
+                <a href="about.html" class="nav-link">
+                    <i class="fas fa-info-circle me-2"></i>About
+                </a>
+                <a href="guide.html" class="nav-link">
+                    <i class="fas fa-book me-2"></i>Guide
+                </a>
+                <a href="media.html" class="nav-link active">
+                    <i class="fas fa-photo-video me-2"></i>Media
+                </a>
+                <a href="social.html" class="nav-link">
+                    <i class="fas fa-share-alt me-2"></i>Social
+                </a>
+                <a href="contact.html" class="nav-link">
+                    <i class="fas fa-envelope me-2"></i>Contact
+                </a>
+            </div>
+            
+            <div class="nav-actions">
+                <a href="login.html" class="btn btn-success">
+                    <i class="fas fa-sign-in-alt me-2"></i> System Login
+                </a>
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-container">
+        <main class="main-content">
+            <!-- Page Header -->
+            <section class="page-header">
+                <div class="container">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Media Gallery</li>
+                        </ol>
+                    </nav>
+                    <h1 class="page-title">Media Gallery</h1>
+                    <p class="page-subtitle">Explore photos, videos, and success stories from our program</p>
+                </div>
+            </section>
+
+            <!-- Gallery Filter -->
+            <section class="gallery-filter-section">
+                <div class="container">
+                    <div class="gallery-filter">
+                        <button class="filter-btn active" onclick="filterGallery('all')">All Media</button>
+                        <button class="filter-btn" onclick="filterGallery('photos')">Photos</button>
+                        <button class="filter-btn" onclick="filterGallery('videos')">Videos</button>
+                        <button class="filter-btn" onclick="filterGallery('stories')">Success Stories</button>
+                        <button class="filter-btn" onclick="filterGallery('events')">Events</button>
+                        <button class="filter-btn" onclick="filterGallery('training')">Training</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gallery Grid -->
+            <section class="gallery-section">
+                <div class="container">
+                    <div class="gallery-grid" id="galleryContainer">
+                        <!-- Photo Items -->
+                        <div class="gallery-item" data-category="photos">
+                            <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                                 alt="Family working together" class="gallery-img" onclick="openLightbox(this)">
+                            <div class="gallery-info">
+                                <span class="gallery-category">Photos</span>
+                                <h4>Family Registration Day</h4>
+                                <p>Families registering for the program at Kibungo Sector office.</p>
+                                <small class="text-muted">March 15, 2024</small>
+                            </div>
+                        </div>
+                        
+                        <div class="gallery-item" data-category="photos">
+                            <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                                 alt="Training session" class="gallery-img" onclick="openLightbox(this)">
+                            <div class="gallery-info">
+                                <span class="gallery-category">Photos</span>
+                                <h4>Intore Training Session</h4>
+                                <p>Youth volunteers receiving training on the system.</p>
+                                <small class="text-muted">February 28, 2024</small>
+                            </div>
+                        </div>
+                        
+                        <!-- Video Items -->
+                        <div class="gallery-item" data-category="videos">
+                            <div class="video-container">
+                                <div class="bg-primary d-flex align-items-center justify-content-center text-white" style="height: 100%;">
+                                    <div class="text-center">
+                                        <i class="fas fa-play-circle fa-4x mb-3"></i>
+                                        <h5>System Tutorial</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="gallery-info">
+                                <span class="gallery-category">Videos</span>
+                                <h4>Complete System Tutorial</h4>
+                                <p>Step-by-step guide to using the Duhigure mu Miryango system.</p>
+                                <small class="text-muted">Duration: 15:30</small>
+                            </div>
+                        </div>
+                        
+                        <div class="gallery-item" data-category="videos">
+                            <div class="video-container">
+                                <div class="bg-success d-flex align-items-center justify-content-center text-white" style="height: 100%;">
+                                    <div class="text-center">
+                                        <i class="fas fa-play-circle fa-4x mb-3"></i>
+                                        <h5>Success Story</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="gallery-info">
+                                <span class="gallery-category">Videos</span>
+                                <h4>Family Success Story</h4>
+                                <p>Interview with the Uwimana family about their achievements.</p>
+                                <small class="text-muted">Duration: 8:45</small>
+                            </div>
+                        </div>
+                        
+                        <!-- Success Stories -->
+                        <div class="gallery-item" data-category="stories">
+                            <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                                 alt="Success story" class="gallery-img">
+                            <div class="gallery-info">
+                                <span class="gallery-category">Success Stories</span>
+                                <h4>From Kitchen Garden to Market</h4>
+                                <p>How the Niyonzima family turned their kitchen garden into a profitable venture.</p>
+                                <small class="text-muted">March 10, 2024</small>
+                            </div>
+                        </div>
+                        
+                        <div class="gallery-item" data-category="stories">
+                            <img src="https://images.unsplash.com/photo-1551836026-d5c2c5af78e4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                                 alt="Digital literacy" class="gallery-img">
+                            <div class="gallery-info">
+                                <span class="gallery-category">Success Stories</span>
+                                <h4>Digital Literacy Journey</h4>
+                                <p>Elderly couple learns to use smartphones for family development tracking.</p>
+                                <small class="text-muted">February 20, 2024</small>
+                            </div>
+                        </div>
+                        
+                        <!-- Event Items -->
+                        <div class="gallery-item" data-category="events">
+                            <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                                 alt="Community event" class="gallery-img" onclick="openLightbox(this)">
+                            <div class="gallery-info">
+                                <span class="gallery-category">Events</span>
+                                <h4>Community Launch Event</h4>
+                                <p>Official launch ceremony attended by local leaders and community members.</p>
+                                <small class="text-muted">January 25, 2024</small>
+                            </div>
+                        </div>
+                        
+                        <div class="gallery-item" data-category="training">
+                            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                                 alt="Training workshop" class="gallery-img" onclick="openLightbox(this)">
+                            <div class="gallery-info">
+                                <span class="gallery-category">Training</span>
+                                <h4>Administrative Training</h4>
+                                <p>Sector officials learning to manage and monitor the system.</p>
+                                <small class="text-muted">January 18, 2024</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Load More Button -->
+                    <div class="load-more">
+                        <button class="btn btn-outline-primary btn-lg" onclick="loadMoreMedia()">
+                            <i class="fas fa-plus me-2"></i> Load More Media
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials Section -->
+            <section class="content-section">
+                <div class="container">
+                    <h2 class="section-title text-center">Success Stories</h2>
+                    <p class="section-subtitle">Hear from families who have transformed through the program</p>
+                    
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">
+                            "Duhigure mu Miryango has changed how our family plans and achieves goals. We went from just surviving to actually planning our development. The system helped us track our progress and stay motivated."
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">Jean Uwimana</h5>
+                                <p class="mb-0">Family Head, Kibungo Sector</p>
+                                <small>Registered: December 2023</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-5">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-start mb-3">
+                                        <div class="author-avatar me-3">
+                                            <i class="fas fa-user-female"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="card-title">Marie Mukamana</h5>
+                                            <p class="card-text">"As an Intore volunteer, I've helped 15 families register and use the system. Seeing their progress motivates me to continue serving my community."</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-start mb-3">
+                                        <div class="author-avatar me-3">
+                                            <i class="fas fa-user-tie"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="card-title">Peter Hakizimana</h5>
+                                            <p class="card-text">"The scalability design means we can expand this success to all sectors. Kibungo is just the beginning of a nationwide transformation."</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Video Tutorials Section -->
+            <section class="content-section bg-light">
+                <div class="container">
+                    <h2 class="section-title text-center">Video Tutorials</h2>
+                    <p class="section-subtitle">Learn how to use the system with our video guides</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="video-container">
+                                    <div class="bg-primary d-flex align-items-center justify-content-center text-white">
+                                        <i class="fas fa-play-circle fa-3x"></i>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Getting Started Guide</h5>
+                                    <p class="card-text">Complete walkthrough for new families joining the system.</p>
+                                    <button class="btn btn-sm btn-outline-primary">Watch Now</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="video-container">
+                                    <div class="bg-success d-flex align-items-center justify-content-center text-white">
+                                        <i class="fas fa-play-circle fa-3x"></i>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Setting Performance Duties</h5>
+                                    <p class="card-text">How to create effective family and individual duties.</p>
+                                    <button class="btn btn-sm btn-outline-success">Watch Now</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="video-container">
+                                    <div class="bg-warning d-flex align-items-center justify-content-center text-white">
+                                        <i class="fas fa-play-circle fa-3x"></i>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Progress Tracking Tutorial</h5>
+                                    <p class="card-text">Learn how to update and monitor your progress effectively.</p>
+                                    <button class="btn btn-sm btn-outline-warning">Watch Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+        <button class="lightbox-close" onclick="closeLightbox(event)">&times;</button>
+        <img src="" alt="" class="lightbox-img" id="lightboxImg">
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-home"></i>
+                        <h4>Duhigure mu Miryango</h4>
+                    </div>
+                    <p class="footer-description">Empowering families through performance contracts for sustainable community development.</p>
+                    <p class="domain-info">Domain: www.duhigure.rw</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h5 class="footer-title">Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="about.html"><i class="fas fa-chevron-right"></i> About Program</a></li>
+                        <li><a href="guide.html"><i class="fas fa-chevron-right"></i> User Guide</a></li>
+                        <li><a href="media.html"><i class="fas fa-chevron-right"></i> Media Gallery</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h5 class="footer-title">System Access</h5>
+                    <ul class="footer-links">
+                        <li><a href="login.html"><i class="fas fa-chevron-right"></i> Family Login</a></li>
+                        <li><a href="login.html?type=intore"><i class="fas fa-chevron-right"></i> Intore Access</a></li>
+                        <li><a href="login.html?type=admin"><i class="fas fa-chevron-right"></i> Administrator</a></li>
+                        <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Support</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h5 class="footer-title">Contact Info</h5>
+                    <div class="contact-info">
+                        <p><i class="fas fa-map-marker-alt"></i> Kibungo Sector Office</p>
+                        <p><i class="fas fa-phone"></i> +250 788 123 456</p>
+                        <p><i class="fas fa-envelope"></i> info@duhigure.rw</p>
+                        <p><i class="fas fa-globe"></i> www.duhigure.rw</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                </div>
+                <p class="copyright">
+                    © <span id="currentYear">2024</span> Kibungo Sector, Bumbogo District. 
+                    Designed for scalability to national implementation.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Gallery Filter Function
+        function filterGallery(category) {
+            const items = document.querySelectorAll('.gallery-item');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            
+            // Update active filter button
+            filterBtns.forEach(btn => {
+                if (btn.textContent.toLowerCase().includes(category) || 
+                    (category === 'all' && btn.textContent.includes('All Media'))) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Filter items
+            items.forEach(item => {
+                if (category === 'all' || item.dataset.category === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+        
+        // Lightbox Functions
+        function openLightbox(imgElement) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            
+            lightboxImg.src = imgElement.src;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeLightbox(event) {
+            if (event.target.id === 'lightbox' || event.target.classList.contains('lightbox-close')) {
+                const lightbox = document.getElementById('lightbox');
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+        
+        // Load More Media
+        function loadMoreMedia() {
+            const galleryContainer = document.getElementById('galleryContainer');
+            const loadMoreBtn = document.querySelector('.load-more button');
+            
+            // Simulate loading
+            loadMoreBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Loading...';
+            loadMoreBtn.disabled = true;
+            
+            setTimeout(() => {
+                // Add more items (in real app, this would come from API)
+                const newItems = [
+                    {
+                        category: 'photos',
+                        title: 'Community Meeting',
+                        description: 'Monthly community meeting to discuss program progress.',
+                        date: 'March 5, 2024'
+                    },
+                    {
+                        category: 'videos',
+                        title: 'Interview with Coordinator',
+                        description: 'Sector coordinator discusses program impact and future plans.',
+                        duration: '12:20'
+                    },
+                    {
+                        category: 'stories',
+                        title: 'Youth Empowerment',
+                        description: 'How young people are leading community development initiatives.',
+                        date: 'February 28, 2024'
+                    }
+                ];
+                
+                newItems.forEach(item => {
+                    const newItem = document.createElement('div');
+                    newItem.className = 'gallery-item';
+                    newItem.dataset.category = item.category;
+                    
+                    if (item.category === 'photos') {
+                        newItem.innerHTML = `
+                            <img src="https://images.unsplash.com/photo-1551836026-d5c2c5af78e4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                                 alt="${item.title}" class="gallery-img" onclick="openLightbox(this)">
+                            <div class="gallery-info">
+                                <span class="gallery-category">${item.category.charAt(0).toUpperCase() + item.category.slice(1)}</span>
+                                <h4>${item.title}</h4>
+                                <p>${item.description}</p>
+                                <small class="text-muted">${item.date}</small>
+                            </div>
+                        `;
+                    } else if (item.category === 'videos') {
+                        newItem.innerHTML = `
+                            <div class="video-container">
+                                <div class="bg-info d-flex align-items-center justify-content-center text-white" style="height: 100%;">
+                                    <div class="text-center">
+                                        <i class="fas fa-play-circle fa-4x mb-3"></i>
+                                        <h5>${item.title}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="gallery-info">
+                                <span class="gallery-category">${item.category.charAt(0).toUpperCase() + item.category.slice(1)}</span>
+                                <h4>${item.title}</h4>
+                                <p>${item.description}</p>
+                                <small class="text-muted">Duration: ${item.duration}</small>
+                            </div>
+                        `;
+                    } else {
+                        newItem.innerHTML = `
+                            <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                                 alt="${item.title}" class="gallery-img">
+                            <div class="gallery-info">
+                                <span class="gallery-category">${item.category.charAt(0).toUpperCase() + item.category.slice(1)}</span>
+                                <h4>${item.title}</h4>
+                                <p>${item.description}</p>
+                                <small class="text-muted">${item.date}</small>
+                            </div>
+                        `;
+                    }
+                    
+                    galleryContainer.appendChild(newItem);
+                });
+                
+                // Reset button
+                loadMoreBtn.innerHTML = '<i class="fas fa-plus me-2"></i> Load More Media';
+                loadMoreBtn.disabled = false;
+            }, 1500);
+        }
+        
+        // Initialize gallery
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up filter buttons
+            document.querySelectorAll('.sidebar-menu a[onclick^="filterGallery"]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const category = this.getAttribute('onclick').match(/filterGallery\('(\w+)'\)/)[1];
+                    filterGallery(category);
+                    
+                    // Scroll to gallery
+                    document.querySelector('.gallery-section').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

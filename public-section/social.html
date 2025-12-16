@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Feeds - Duhigure mu Miryango</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/siderbar.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    
+    <style>
+        .social-section {
+            padding: 60px 0;
+        }
+        
+        .social-platform-card {
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            background: white;
+        }
+        
+        .social-platform-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        .platform-header {
+            padding: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .twitter-header {
+            background: #1da1f2;
+        }
+        
+        .facebook-header {
+            background: #1877f2;
+        }
+        
+        .youtube-header {
+            background: #ff0000;
+        }
+        
+        .instagram-header {
+            background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+        }
+        
+        .platform-icon {
+            font-size: 1.8rem;
+        }
+        
+        .platform-content {
+            padding: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .social-post {
+            border-bottom: 1px solid #eee;
+            padding: 20px 0;
+        }
+        
+        .social-post:last-child {
+            border-bottom: none;
+        }
+        
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .post-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+        
+        .post-info h5 {
+            margin: 0;
+            font-size: 1rem;
+        }
+        
+        .post-info small {
+            color: #6c757d;
+        }
+        
+        .post-content {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .post-actions {
+            display: flex;
+            gap: 20px;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .post-action {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .post-action:hover {
+            color: var(--primary-color);
+        }
+        
+        .social-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            border-top: 4px solid var(--primary-color);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .social-link-btn {
+            padding: 12px 30px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .social-link-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            color: white;
+        }
+        
+        .btn-twitter {
+            background: #1da1f2;
+        }
+        
+        .btn-facebook {
+            background: #1877f2;
+        }
+        
+        .btn-youtube {
+            background: #ff0000;
+        }
+        
+        .btn-instagram {
+            background: linear-gradient(45deg, #405de6, #833ab4);
+        }
+        
+        .live-update {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .update-text {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .live-badge {
+            background: #ff4757;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="program-title">Social Media Feeds</h1>
+                <p class="program-subtitle">Stay connected with the latest updates from our social media channels</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <i class="fas fa-share-alt"></i>
+                <h3>Social</h3>
+            </div>
+            <span class="sidebar-subtitle">Updates & Feeds</span>
+        </div>
+        
+        <div class="sidebar-content">
+            <!-- Social Stats -->
+            <div class="sidebar-section">
+                <h4 class="sidebar-section-title">Social Stats</h4>
+                <div class="sidebar-stat-card">
+                    <div class="sidebar-stat-number">2.5K</div>
+                    <div class="sidebar-stat-label">Twitter Followers</div>
+                </div>
+                <div class="sidebar-stat-card">
+                    <div class="sidebar-stat-number">3.8K</div>
+                    <div class="sidebar-stat-label">Facebook Followers</div>
+                </div>
+                <div class="sidebar-stat-card">
+                    <div class="sidebar-stat-number">1.2K</div>
+                    <div class="sidebar-stat-label">YouTube Subscribers</div>
+                </div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <div class="sidebar-section">
+                <h4 class="sidebar-section-title">Navigation</h4>
+                <ul class="sidebar-menu">
+                    <li><a href="index.html">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a></li>
+                    <li><a href="about.html">
+                        <i class="fas fa-info-circle"></i>
+                        <span>About Program</span>
+                    </a></li>
+                    <li><a href="guide.html">
+                        <i class="fas fa-book"></i>
+                        <span>User Guide</span>
+                    </a></li>
+                    <li><a href="media.html">
+                        <i class="fas fa-photo-video"></i>
+                        <span>Media Gallery</span>
+                    </a></li>
+                    <li><a href="social.html" class="active">
+                        <i class="fas fa-share-alt"></i>
+                        <span>Social Feeds</span>
+                    </a></li>
+                    <li><a href="contact.html">
+                        <i class="fas fa-envelope"></i>
+                        <span>Contact Us</span>
+                    </a></li>
+                </ul>
+            </div>
+
+            <!-- Follow Us -->
+            <div class="sidebar-section">
+                <h4 class="sidebar-section-title">Follow Us</h4>
+                <div class="social-feed">
+                    <div class="social-post">
+                        <div class="post-header">
+                            <div class="post-avatar">
+                                <i class="fab fa-twitter"></i>
+                            </div>
+                            <div class="post-info">
+                                <h5>@DuhigureRwanda</h5>
+                                <small>2 hours ago</small>
+                            </div>
+                        </div>
+                        <p class="post-content">New families joining every day! Welcome to all new participants in Kibungo Sector.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN NAVIGATION -->
+    <nav class="main-nav">
+        <div class="container nav-container">
+            <div class="nav-items">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home me-2"></i>Home
+                </a>
+                <a href="about.html" class="nav-link">
+                    <i class="fas fa-info-circle me-2"></i>About
+                </a>
+                <a href="guide.html" class="nav-link">
+                    <i class="fas fa-book me-2"></i>Guide
+                </a>
+                <a href="media.html" class="nav-link">
+                    <i class="fas fa-photo-video me-2"></i>Media
+                </a>
+                <a href="social.html" class="nav-link active">
+                    <i class="fas fa-share-alt me-2"></i>Social
+                </a>
+                <a href="contact.html" class="nav-link">
+                    <i class="fas fa-envelope me-2"></i>Contact
+                </a>
+            </div>
+            
+            <div class="nav-actions">
+                <a href="login.html" class="btn btn-success">
+                    <i class="fas fa-sign-in-alt me-2"></i> System Login
+                </a>
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-container">
+        <main class="main-content">
+            <!-- Page Header -->
+            <section class="page-header">
+                <div class="container">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Social Feeds</li>
+                        </ol>
+                    </nav>
+                    <h1 class="page-title">Social Media Updates</h1>
+                    <p class="page-subtitle">Latest news and updates from our social media platforms</p>
+                </div>
+            </section>
+
+            <!-- Live Update Banner -->
+            <div class="container">
+                <div class="live-update">
+                    <div class="update-text">
+                        <span class="live-badge">LIVE</span>
+                        <span>Follow us on social media for real-time updates</span>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link-btn btn-twitter">
+                            <i class="fab fa-twitter"></i> Follow @DuhigureRwanda
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Stats -->
+            <section class="social-stats-section">
+                <div class="container">
+                    <h2 class="section-title text-center">Our Social Presence</h2>
+                    <p class="section-subtitle">Join our growing community across different platforms</p>
+                    
+                    <div class="social-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fab fa-twitter"></i>
+                            </div>
+                            <div class="stat-number">2,548</div>
+                            <div class="stat-label">Twitter Followers</div>
+                            <div class="stat-trend text-success">
+                                <i class="fas fa-arrow-up"></i> 12% this month
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fab fa-facebook"></i>
+                            </div>
+                            <div class="stat-number">3,821</div>
+                            <div class="stat-label">Facebook Followers</div>
+                            <div class="stat-trend text-success">
+                                <i class="fas fa-arrow-up"></i> 8% this month
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fab fa-youtube"></i>
+                            </div>
+                            <div class="stat-number">1,245</div>
+                            <div class="stat-label">YouTube Subscribers</div>
+                            <div class="stat-trend text-success">
+                                <i class="fas fa-arrow-up"></i> 15% this month
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fab fa-instagram"></i>
+                            </div>
+                            <div class="stat-number">1,892</div>
+                            <div class="stat-label">Instagram Followers</div>
+                            <div class="stat-trend text-success">
+                                <i class="fas fa-arrow-up"></i> 10% this month
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Twitter Feed -->
+            <section class="social-section">
+                <div class="container">
+                    <div class="social-platform-card">
+                        <div class="platform-header twitter-header">
+                            <i class="fab fa-twitter platform-icon"></i>
+                            <div>
+                                <h3 class="mb-1">Twitter Updates</h3>
+                                <p class="mb-0">Latest tweets from @DuhigureRwanda</p>
+                            </div>
+                        </div>
+                        <div class="platform-content">
+                            <div class="social-post">
+                                <div class="post-header">
+                                    <div class="post-avatar">
+                                        <i class="fab fa-twitter"></i>
+                                    </div>
+                                    <div class="post-info">
+                                        <h5>@DuhigureRwanda</h5>
+                                        <small>2 hours ago</small>
+                                    </div>
+                                </div>
+                                <div class="post-content">
+                                    <p>Exciting news! We've reached 1,250 families registered in the Duhigure mu Miryango program! 
+                                    This milestone shows the growing commitment to family development in Kibungo Sector.</p>
+                                    <div class="post-tags">
+                                        <span class="badge bg-primary">#FamilyDevelopment</span>
+                                        <span class="badge bg-success">#KibungoSector</span>
+                                        <span class="badge bg-info">#Rwanda</span>
+                                    </div>
+                                </div>
+                                <div class="post-actions">
+                                    <div class="post-action">
+                                        <i class="far fa-comment"></i>
+                                        <span>24</span>
+                                    </div>
+                                    <div class="post-action">
+                                        <i class="fas fa-retweet"></i>
+                                        <span>45</span>
+                                    </div>
+                                    <div class="post-action">
+                                        <i class="far fa-heart"></i>
+                                        <span>128</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="social-post">
+                                <div class="post-header">
+                                    <div class="post-avatar">
+                                        <i class="fab fa-twitter"></i>
+                                    </div>
+                                    <div class="post-info">
+                                        <h5>@DuhigureRwanda</h5>
+                                        <small>1 day ago</small>
+                                    </div>
+                                </div>
+                                <div class="post-content">
+                                    <p>Training session for new Intore mu Ikoranabuhanga volunteers completed successfully! 
+                                    25 new youth volunteers are now ready to assist families with the system.</p>
+                                    <div class="post-tags">
+                                        <span class="badge bg-warning">#YouthEmpowerment</span>
+                                        <span class="badge bg-info">#DigitalLiteracy</span>
+                                    </div>
+                                </div>
+                                <div class="post-actions">
+                                    <div class="post-action">
+                                        <i class="far fa-comment"></i>
+                                        <span>18</span>
+                                    </div>
+                                    <div class="post-action">
+                                        <i class="fas fa-retweet"></i>
+                                        <span>32</span>
+                                    </div>
+                                    <div class="post-action">
+                                        <i class="far fa-heart"></i>
+                                        <span>89</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="social-post">
+                                <div class="post-header">
+                                    <div class="post-avatar">
+                                        <i class="fas fa-user-tie"></i>
+                                    </div>
+                                    <div class="post-info">
+                                        <h5>@SectorCoordinator</h5>
+                                        <small>2 days ago</small>
+                                    </div>
+                                </div>
+                                <div class="post-content">
+                                    <p>Visited several families using the Duhigure system. The progress is remarkable! 
+                                    Families are achieving their performance duties and setting new goals. 
+                                    Proud of our community's commitment to development.</p>
+                                </div>
+                                <div class="post-actions">
+                                    <div class="post-action">
+                                        <i class="far fa-comment"></i>
+                                        <span>31</span>
+                                    </div>
+                                    <div class="post-action">
+                                        <i class="fas fa-retweet"></i>
+                                        <span>42</span>
+                                    </div>
+                                    <div class="post-action">
+                                        <i class="far fa-heart"></i>
+                                        <span>156</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Facebook Feed -->
+            <section class="social-section">
+                <div class="container">
+                    <div class="social-platform-card">
+                        <div class="platform-header facebook-header">
+                            <i class="fab fa-facebook platform-icon"></i>
+                            <div>
+                                <h3 class="mb-1">Facebook Updates</h3>
+                                <p class="mb-0">Latest posts from our Facebook page</p>
+                            </div>
+                        </div>
+                        <div class="platform-content">
+                            <div class="social-post">
+                                <div class="post-header">
+                                    <div class="post-avatar">
+                                        <i class="fab fa-facebook"></i>
+                                    </div>
+                                    <div class="post-info">
+                                        <h5>Duhigure mu Miryango</h5>
+                                        <small>3 days ago • 245 likes</small>
+                                    </div>
+                                </div>
+                                <div class="post-content">
+                                    <p>🎉 Celebrating Success! 🎉</p>
+                                    <p>We're thrilled to announce that 85% of families who joined in the first quarter have 
+                                    completed their initial performance duties! This is a testament to the commitment of 
+                                    our community to family development.</p>
+                                    <p>Thank you to all families, Intore volunteers, and sector officials for making this possible!</p>
+                                    <div class="post-image mt-3">
+                                        <div class="ratio ratio-16x9 bg-light rounded">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <i class="fas fa-image fa-3x text-muted"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="social-post">
+                                <div class="post-header">
+                                    <div class="post-avatar">
+                                        <i class="fab fa-facebook"></i>
+                                    </div>
+                                    <div class="post-info">
+                                        <h5>Duhigure mu Miryango</h5>
+                                        <small>1 week ago • 189 likes</small>
+                                    </div>
+                                </div>
+                                <div class="post-content">
+                                    <p>📢 Important Announcement 📢</p>
+                                    <p>Our system will undergo scheduled maintenance this Saturday from 8:00 PM to 10:00 PM. 
+                                    During this time, the system will be temporarily unavailable. We apologize for any inconvenience.</p>
+                                    <p>Please plan your updates accordingly. Thank you for your understanding!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Social Links -->
+            <section class="content-section">
+                <div class="container text-center">
+                    <h2 class="section-title">Follow Us on Social Media</h2>
+                    <p class="section-subtitle">Stay updated with the latest news, events, and success stories</p>
+                    
+                    <div class="social-links">
+                        <a href="#" class="social-link-btn btn-twitter">
+                            <i class="fab fa-twitter fa-lg"></i> Twitter
+                        </a>
+                        <a href="#" class="social-link-btn btn-facebook">
+                            <i class="fab fa-facebook fa-lg"></i> Facebook
+                        </a>
+                        <a href="#" class="social-link-btn btn-youtube">
+                            <i class="fab fa-youtube fa-lg"></i> YouTube
+                        </a>
+                        <a href="#" class="social-link-btn btn-instagram">
+                            <i class="fab fa-instagram fa-lg"></i> Instagram
+                        </a>
+                    </div>
+                    
+                    <div class="mt-5">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Note:</strong> Social media integration allows us to share success stories and updates in real-time. 
+                            This feature demonstrates the scalability of our communication strategy.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Embed Feed -->
+            <section class="content-section bg-light">
+                <div class="container">
+                    <h2 class="section-title text-center">Live Social Feed</h2>
+                    <p class="section-subtitle">Real-time updates from our social media channels</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-lg-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-twitter text-white">
+                                    <i class="fab fa-twitter me-2"></i> Twitter Feed
+                                </div>
+                                <div class="card-body">
+                                    <div id="twitter-feed">
+                                        <!-- Twitter widget would be embedded here -->
+                                        <div class="text-center py-4">
+                                            <i class="fab fa-twitter fa-3x text-muted mb-3"></i>
+                                            <p>Twitter feed would load here</p>
+                                            <small class="text-muted">In production, this would show live tweets</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-facebook text-white">
+                                    <i class="fab fa-facebook me-2"></i> Facebook Page
+                                </div>
+                                <div class="card-body">
+                                    <div id="facebook-feed">
+                                        <!-- Facebook widget would be embedded here -->
+                                        <div class="text-center py-4">
+                                            <i class="fab fa-facebook fa-3x text-muted mb-3"></i>
+                                            <p>Facebook feed would load here</p>
+                                            <small class="text-muted">In production, this would show Facebook posts</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-home"></i>
+                        <h4>Duhigure mu Miryango</h4>
+                    </div>
+                    <p class="footer-description">Empowering families through performance contracts for sustainable community development.</p>
+                    <p class="domain-info">Domain: www.duhigure.rw</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h5 class="footer-title">Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="about.html"><i class="fas fa-chevron-right"></i> About Program</a></li>
+                        <li><a href="guide.html"><i class="fas fa-chevron-right"></i> User Guide</a></li>
+                        <li><a href="media.html"><i class="fas fa-chevron-right"></i> Media Gallery</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h5 class="footer-title">System Access</h5>
+                    <ul class="footer-links">
+                        <li><a href="login.html"><i class="fas fa-chevron-right"></i> Family Login</a></li>
+                        <li><a href="login.html?type=intore"><i class="fas fa-chevron-right"></i> Intore Access</a></li>
+                        <li><a href="login.html?type=admin"><i class="fas fa-chevron-right"></i> Administrator</a></li>
+                        <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Support</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h5 class="footer-title">Contact Info</h5>
+                    <div class="contact-info">
+                        <p><i class="fas fa-map-marker-alt"></i> Kibungo Sector Office</p>
+                        <p><i class="fas fa-phone"></i> +250 788 123 456</p>
+                        <p><i class="fas fa-envelope"></i> info@duhigure.rw</p>
+                        <p><i class="fas fa-globe"></i> www.duhigure.rw</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                </div>
+                <p class="copyright">
+                    © <span id="currentYear">2024</span> Kibungo Sector, Bumbogo District. 
+                    Designed for scalability to national implementation.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Initialize social media feeds
+        function initializeSocialFeeds() {
+            // This function would initialize actual social media widgets
+            // For now, we'll simulate with setTimeout
+            setTimeout(() => {
+                const twitterFeed = document.getElementById('twitter-feed');
+                const facebookFeed = document.getElementById('facebook-feed');
+                
+                if (twitterFeed) {
+                    twitterFeed.innerHTML = `
+                        <div class="social-post">
+                            <div class="post-header">
+                                <div class="post-avatar">
+                                    <i class="fab fa-twitter"></i>
+                                </div>
+                                <div class="post-info">
+                                    <h5>@DuhigureRwanda</h5>
+                                    <small>Just now</small>
+                                </div>
+                            </div>
+                            <div class="post-content">
+                                <p>Live feed active! Follow us for real-time updates about the Duhigure mu Miryango program.</p>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                if (facebookFeed) {
+                    facebookFeed.innerHTML = `
+                        <div class="social-post">
+                            <div class="post-header">
+                                <div class="post-avatar">
+                                    <i class="fab fa-facebook"></i>
+                                </div>
+                                <div class="post-info">
+                                    <h5>Duhigure mu Miryango</h5>
+                                    <small>Updated 5 mins ago</small>
+                                </div>
+                            </div>
+                            <div class="post-content">
+                                <p>Welcome to our Facebook page! Like and follow for regular updates about family development initiatives.</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }, 1000);
+        }
+        
+        // Load more tweets/posts
+        function loadMorePosts(platform) {
+            const container = platform === 'twitter' ? 
+                document.querySelector('.platform-content:first-child') : 
+                document.querySelectorAll('.platform-content')[1];
+            
+            const loadBtn = event.target;
+            loadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+            loadBtn.disabled = true;
+            
+            setTimeout(() => {
+                const newPost = document.createElement('div');
+                newPost.className = 'social-post';
+                newPost.innerHTML = `
+                    <div class="post-header">
+                        <div class="post-avatar">
+                            <i class="fab fa-${platform}"></i>
+                        </div>
+                        <div class="post-info">
+                            <h5>@DuhigureRwanda</h5>
+                            <small>New post</small>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <p>This is a newly loaded post from our ${platform.charAt(0).toUpperCase() + platform.slice(1)} feed.</p>
+                    </div>
+                `;
+                
+                container.appendChild(newPost);
+                loadBtn.innerHTML = 'Load More';
+                loadBtn.disabled = false;
+                
+                // Scroll to new post
+                newPost.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 1500);
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSocialFeeds();
+        });
+    </script>
+</body>
+</html>
