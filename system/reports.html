@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - DUHIGURE MU MIRYANGO</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .dashboard-sidebar {
+            background: #2c3e50;
+            color: white;
+            min-height: calc(100vh - 56px);
+            padding: 0;
+        }
+        .sidebar-nav {
+            padding: 1rem 0;
+        }
+        .nav-item {
+            margin: 0;
+        }
+        .nav-link {
+            color: #ecf0f1;
+            padding: 12px 20px;
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            background: #34495e;
+            border-left-color: #3498db;
+            color: white;
+        }
+        .nav-link i {
+            width: 20px;
+            margin-right: 10px;
+        }
+        .dashboard-main {
+            background: #f8f9fa;
+            min-height: calc(100vh - 56px);
+        }
+        .report-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        .report-card:hover {
+            transform: translateY(-2px);
+        }
+        .report-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        .report-icon.primary { background: linear-gradient(45deg, #3498db, #2980b9); }
+        .report-icon.success { background: linear-gradient(45deg, #27ae60, #229954); }
+        .report-icon.warning { background: linear-gradient(45deg, #f39c12, #e67e22); }
+        .report-icon.info { background: linear-gradient(45deg, #9b59b6, #8e44ad); }
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .user-info {
+            background: #34495e;
+            padding: 1rem;
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .filter-section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .btn-export {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            color: white;
+            font-weight: 600;
+        }
+        .btn-export:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+        .progress-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(#28a745 0% 75%, #e9ecef 75% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+        .progress-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/system/dashboard">
+                <i class="fas fa-home"></i> DUHIGURE MU MIRYANGO
+            </a>
+            <div class="navbar-nav ms-auto">
+                <span class="navbar-text me-3" id="userWelcome">
+                    Welcome, <span id="userName">User</span>
+                </span>
+                <button class="btn btn-outline-light btn-sm" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 col-md-4">
+                <div class="dashboard-sidebar">
+                    <div class="user-info">
+                        <div class="user-avatar" id="userAvatar">U</div>
+                        <div>
+                            <h6 class="mb-0" id="userFullName">User Name</h6>
+                            <small class="text-muted" id="userRole">Role</small>
+                        </div>
+                    </div>
+                    
+                    <nav class="sidebar-nav">
+                        <ul class="nav nav-pills flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/system/dashboard">
+                                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/system/family-profile">
+                                    <i class="fas fa-users"></i> Family Profile
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/system/members">
+                                    <i class="fas fa-user-friends"></i> Family Members
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/system/performance-contract">
+                                    <i class="fas fa-file-contract"></i> Performance Contract
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/system/reports">
+                                    <i class="fas fa-chart-bar"></i> Reports
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9 col-md-8">
+                <div class="dashboard-main p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2>Reports & Analytics</h2>
+                        <div>
+                            <button class="btn btn-export me-2" onclick="exportReport('pdf')">
+                                <i class="fas fa-file-pdf"></i> Export PDF
+                            </button>
+                            <button class="btn btn-outline-primary" onclick="exportReport('excel')">
+                                <i class="fas fa-file-excel"></i> Export Excel
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Filter Section -->
+                    <div class="filter-section">
+                        <h5 class="mb-3">
+                            <i class="fas fa-filter"></i> Report Filters
+                        </h5>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <select class="form-select" id="reportType">
+                                        <option value="family">Family Performance</option>
+                                        <option value="member">Member Performance</option>
+                                        <option value="sector">Sector Overview</option>
+                                        <option value="progress">Progress Tracking</option>
+                                    </select>
+                                    <label for="reportType">Report Type</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <select class="form-select" id="timePeriod">
+                                        <option value="weekly">This Week</option>
+                                        <option value="monthly">This Month</option>
+                                        <option value="quarterly">This Quarter</option>
+                                        <option value="yearly">This Year</option>
+                                    </select>
+                                    <label for="timePeriod">Time Period</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <input type="date" class="form-control" id="startDate">
+                                    <label for="startDate">Start Date</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <input type="date" class="form-control" id="endDate">
+                                    <label for="endDate">End Date</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <button class="btn btn-primary" onclick="generateReport()">
+                                <i class="fas fa-chart-line"></i> Generate Report
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Statistics Overview -->
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-icon text-primary">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h4 id="totalFamilies">1,247</h4>
+                            <p class="text-muted mb-0">Total Families</p>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon text-success">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <h4 id="completedContracts">856</h4>
+                            <p class="text-muted mb-0">Completed Contracts</p>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon text-warning">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h4 id="activeContracts">391</h4>
+                            <p class="text-muted mb-0">Active Contracts</p>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon text-info">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                            <h4 id="successRate">78%</h4>
+                            <p class="text-muted mb-0">Success Rate</p>
+                        </div>
+                    </div>
+
+                    <!-- Report Cards -->
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="report-card">
+                                <div class="report-icon primary mx-auto">
+                                    <i class="fas fa-chart-pie"></i>
+                                </div>
+                                <h5 class="text-center">Performance Overview</h5>
+                                <div class="progress-circle">
+                                    <div class="progress-text">78%</div>
+                                </div>
+                                <p class="text-center text-muted mt-2">Overall Performance Score</p>
+                                <div class="mt-3">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>Excellent (90-100%)</span>
+                                        <span>23%</span>
+                                    </div>
+                                    <div class="progress mb-2" style="height: 6px;">
+                                        <div class="progress-bar bg-success" style="width: 23%"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>Good (70-89%)</span>
+                                        <span>45%</span>
+                                    </div>
+                                    <div class="progress mb-2" style="height: 6px;">
+                                        <div class="progress-bar bg-info" style="width: 45%"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>Needs Improvement (0-69%)</span>
+                                        <span>32%</span>
+                                    </div>
+                                    <div class="progress mb-0" style="height: 6px;">
+                                        <div class="progress-bar bg-warning" style="width: 32%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="report-card">
+                                <div class="report-icon success mx-auto">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <h5 class="text-center">Top Performing Families</h5>
+                                <div id="topFamilies">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span><i class="fas fa-medal text-warning"></i> Mukamana Family</span>
+                                        <span class="badge bg-success">95%</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span><i class="fas fa-medal text-secondary"></i> Nkurunziza Family</span>
+                                        <span class="badge bg-success">92%</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span><i class="fas fa-medal text-warning"></i> Uwimana Family</span>
+                                        <span class="badge bg-info">88%</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span><i class="fas fa-medal text-warning"></i> Mutoni Family</span>
+                                        <span class="badge bg-info">85%</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span><i class="fas fa-medal text-warning"></i> Bizimana Family</span>
+                                        <span class="badge bg-info">82%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Section -->
+                    <div class="chart-container">
+                        <h5 class="mb-4">
+                            <i class="fas fa-chart-line"></i> Performance Trends
+                        </h5>
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <canvas id="performanceChart" width="400" height="200"></canvas>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="mb-4">
+                                    <h6>Monthly Progress</h6>
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>January</span>
+                                        <span>75%</span>
+                                    </div>
+                                    <div class="progress mb-2" style="height: 8px;">
+                                        <div class="progress-bar bg-primary" style="width: 75%"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>February</span>
+                                        <span>82%</span>
+                                    </div>
+                                    <div class="progress mb-2" style="height: 8px;">
+                                        <div class="progress-bar bg-success" style="width: 82%"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>March</span>
+                                        <span>78%</span>
+                                    </div>
+                                    <div class="progress mb-0" style="height: 8px;">
+                                        <div class="progress-bar bg-info" style="width: 78%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Reports -->
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="report-card">
+                                <div class="report-icon warning mx-auto">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <h5 class="text-center">Areas Needing Attention</h5>
+                                <div id="attentionAreas">
+                                    <div class="alert alert-warning mb-2">
+                                        <strong>Education:</strong> 15 families have children not enrolled in school
+                                    </div>
+                                    <div class="alert alert-warning mb-2">
+                                        <strong>Agriculture:</strong> 23 families need support with crop management
+                                    </div>
+                                    <div class="alert alert-warning mb-2">
+                                        <strong>Health:</strong> 8 families require medical assistance
+                                    </div>
+                                    <div class="alert alert-info mb-0">
+                                        <strong>Housing:</strong> 12 families need construction support
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="report-card">
+                                <div class="report-icon info mx-auto">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <h5 class="text-center">Success Stories</h5>
+                                <div id="successStories">
+                                    <div class="border-start border-success border-4 ps-3 mb-3">
+                                        <h6>Mukamana Family</h6>
+                                        <p class="text-muted mb-1">Completed house construction and started vegetable garden</p>
+                                        <small class="text-success">+95% improvement</small>
+                                    </div>
+                                    <div class="border-start border-success border-4 ps-3 mb-3">
+                                        <h6>Nkurunziza Family</h6>
+                                        <p class="text-muted mb-1">All children enrolled in school, family business started</p>
+                                        <small class="text-success">+92% improvement</small>
+                                    </div>
+                                    <div class="border-start border-success border-4 ps-3 mb-0">
+                                        <h6>Uwimana Family</h6>
+                                        <p class="text-muted mb-1">Solar panels installed, clean water access achieved</p>
+                                        <small class="text-success">+88% improvement</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let currentUser = null;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthentication();
+            loadUserInfo();
+            initializeCharts();
+            setDefaultDates();
+        });
+
+        async function checkAuthentication() {
+            try {
+                const response = await fetch('/api/auth/me');
+                if (!response.ok) {
+                    window.location.href = '/system/login';
+                    return;
+                }
+                currentUser = await response.json();
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                window.location.href = '/system/login';
+            }
+        }
+
+        async function loadUserInfo() {
+            try {
+                if (currentUser) {
+                    document.getElementById('userName').textContent = currentUser.fullName || currentUser.username;
+                    document.getElementById('userFullName').textContent = currentUser.fullName || currentUser.username;
+                    document.getElementById('userRole').textContent = currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1);
+                    document.getElementById('userAvatar').textContent = (currentUser.fullName || currentUser.username).charAt(0).toUpperCase();
+                }
+            } catch (error) {
+                console.error('Failed to load user info:', error);
+            }
+        }
+
+        function initializeCharts() {
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Performance Score',
+                        data: [65, 72, 78, 82, 85, 88],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+
+        function setDefaultDates() {
+            const today = new Date();
+            const oneMonthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+            
+            document.getElementById('startDate').value = oneMonthAgo.toISOString().split('T')[0];
+            document.getElementById('endDate').value = today.toISOString().split('T')[0];
+        }
+
+        function generateReport() {
+            const reportType = document.getElementById('reportType').value;
+            const timePeriod = document.getElementById('timePeriod').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+
+            alert(`Generating ${reportType} report for ${timePeriod} period (${startDate} to ${endDate})`);
+            // In a real application, this would call an API to generate the report
+        }
+
+        function exportReport(format) {
+            const reportType = document.getElementById('reportType').value;
+            alert(`Exporting ${reportType} report as ${format.toUpperCase()}`);
+            // In a real application, this would trigger a download
+        }
+
+        async function logout() {
+            try {
+                await fetch('/api/auth/logout', { method: 'POST' });
+                window.location.href = '/system/login';
+            } catch (error) {
+                console.error('Logout failed:', error);
+            }
+        }
+    </script>
+</body>
+</html>

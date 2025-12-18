@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Profile - DUHIGURE MU MIRYANGO</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .dashboard-sidebar {
+            background: #2c3e50;
+            color: white;
+            min-height: calc(100vh - 56px);
+            padding: 0;
+        }
+        .sidebar-nav {
+            padding: 1rem 0;
+        }
+        .nav-item {
+            margin: 0;
+        }
+
+        .nav-link {
+            color: #ecf0f1;
+            padding: 12px 20px;
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+
+        }
+        .nav-link:hover, .nav-link.active {
+            background: #34495e;
+            border-left-color: #3498db;
+            color: white;
+        }
+        .nav-link i {
+            width: 20px;
+            margin-right: 10px;
+        }
+        .dashboard-main {
+            background: #f8f9fa;
+            min-height: calc(100vh - 56px);
+        }
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        .profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1rem;
+            border: 3px solid rgba(255,255,255,0.3);
+        }
+        .form-section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        .section-title {
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+        }
+        .form-floating {
+            margin-bottom: 1rem;
+        }
+        .btn-primary-custom {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 25px;
+            font-weight: 600;
+        }
+        .btn-primary-custom:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        .info-item {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            font-weight: 600;
+            color: #2c3e50;
+            width: 150px;
+        }
+        .info-value {
+            color: #5a6c7d;
+        }
+        .user-info {
+            background: #34495e;
+            padding: 1rem;
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/system/dashboard">
+                <i class="fas fa-home"></i> DUHIGURE MU MIRYANGO
+            </a>
+            <div class="navbar-nav ms-auto">
+                <span class="navbar-text me-3" id="userWelcome">
+                    Welcome, <span id="userName">User</span>
+                </span>
+                <button class="btn btn-outline-light btn-sm" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 col-md-4">
+                <div class="dashboard-sidebar">
+                    <div class="user-info">
+                        <div class="d-flex align-items-center">
+                            <div class="user-avatar" id="userAvatar">U</div>
+                            <div>
+                                <h6 class="mb-0" id="userFullName">User Name</h6>
+                                <small class="text-muted" id="userRole">Role</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <nav class="sidebar-nav">
+                        <ul class="nav nav-pills flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/system/dashboard">
+                                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/system/family-profile">
+                                    <i class="fas fa-users"></i> Family Profile
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/system/members">
+                                    <i class="fas fa-user-friends"></i> Family Members
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/system/performance-contract">
+                                    <i class="fas fa-file-contract"></i> Performance Contract
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/system/reports">
+                                    <i class="fas fa-chart-bar"></i> Reports
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9 col-md-8">
+                <div class="dashboard-main p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2>Family Profile</h2>
+                        <button class="btn btn-primary-custom" onclick="editMode()">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </button>
+                    </div>
+
+                    <!-- Profile Overview -->
+                    <div class="profile-card">
+                        <div class="profile-header">
+                            <div class="profile-avatar">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <h3 id="familyName">Family Name</h3>
+                            <p class="mb-0" id="headOfFamily">Head of Family</p>
+                            <small id="locationInfo">Location</small>
+                        </div>
+                    </div>
+
+                    <!-- Family Information Form -->
+                    <form id="familyForm" style="display: none;">
+                        <div class="form-section">
+                            <h4 class="section-title">
+                                <i class="fas fa-info-circle"></i> Basic Information
+                            </h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="family_name" name="family_name" placeholder="Family Name" required>
+                                        <label for="family_name">Family Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="head_of_family" name="head_of_family" placeholder="Head of Family" required>
+                                        <label for="head_of_family">Head of Family</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="tel" class="form-control" id="phone_number" name="phone_number" placeholder="Phone Number">
+                                        <label for="phone_number">Phone Number</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                                        <label for="email">Email</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h4 class="section-title">
+                                <i class="fas fa-map-marker-alt"></i> Location Information
+                            </h4>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="sector" name="sector" required>
+                                            <option value="">Select Sector</option>
+                                            <option value="Kibungo">Kibungo</option>
+                                            <option value="Bumbogo">Bumbogo</option>
+                                            <option value="Gasabo">Gasabo</option>
+                                            <option value="Kicukiro">Kicukiro</option>
+                                        </select>
+                                        <label for="sector">Sector</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="cell" name="cell" placeholder="Cell">
+                                        <label for="cell">Cell</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="village" name="village" placeholder="Village">
+                                        <label for="village">Village</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-floating">
+                                <textarea class="form-control" id="address" name="address" placeholder="Detailed Address" style="height: 80px;"></textarea>
+                                <label for="address">Detailed Address</label>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="button" class="btn btn-secondary me-3" onclick="cancelEdit()">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                            <button type="submit" class="btn btn-primary-custom">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Family Information Display -->
+                    <div id="familyInfoDisplay">
+                        <div class="form-section">
+                            <h4 class="section-title">
+                                <i class="fas fa-info-circle"></i> Basic Information
+                            </h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info-item d-flex">
+                                        <div class="info-label">Family Name:</div>
+                                        <div class="info-value" id="display_family_name">-</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item d-flex">
+                                        <div class="info-label">Head of Family:</div>
+                                        <div class="info-value" id="display_head_of_family">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info-item d-flex">
+                                        <div class="info-label">Phone Number:</div>
+                                        <div class="info-value" id="display_phone_number">-</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item d-flex">
+                                        <div class="info-label">Email:</div>
+                                        <div class="info-value" id="display_email">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h4 class="section-title">
+                                <i class="fas fa-map-marker-alt"></i> Location Information
+                            </h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info-item d-flex">
+                                        <div class="info-label">Sector:</div>
+                                        <div class="info-value" id="display_sector">-</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item d-flex">
+                                        <div class="info-label">Cell:</div>
+                                        <div class="info-value" id="display_cell">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info-item d-flex">
+                                        <div class="info-label">Village:</div>
+                                        <div class="info-value" id="display_village">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Address:</div>
+                                <div class="info-value" id="display_address">-</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-section text-center">
+                                <i class="fas fa-users fa-2x text-primary mb-2"></i>
+                                <h5 id="memberCount">0</h5>
+                                <p class="text-muted mb-0">Family Members</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-section text-center">
+                                <i class="fas fa-file-contract fa-2x text-success mb-2"></i>
+                                <h5 id="contractCount">0</h5>
+                                <p class="text-muted mb-0">Active Contracts</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-section text-center">
+                                <i class="fas fa-calendar-alt fa-2x text-info mb-2"></i>
+                                <h5 id="memberSince">2024</h5>
+                                <p class="text-muted mb-0">Member Since</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentUser = null;
+        let currentFamily = null;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthentication();
+            loadUserInfo();
+            loadFamilyProfile();
+        });
+
+        async function checkAuthentication() {
+            try {
+                const response = await fetch('/api/auth/me');
+                if (!response.ok) {
+                    window.location.href = '/system/login';
+                    return;
+                }
+                currentUser = await response.json();
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                window.location.href = '/system/login';
+            }
+        }
+
+        async function loadUserInfo() {
+            try {
+                if (currentUser) {
+                    document.getElementById('userName').textContent = currentUser.fullName || currentUser.username;
+                    document.getElementById('userFullName').textContent = currentUser.fullName || currentUser.username;
+                    document.getElementById('userRole').textContent = currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1);
+                    document.getElementById('userAvatar').textContent = (currentUser.fullName || currentUser.username).charAt(0).toUpperCase();
+                }
+            } catch (error) {
+                console.error('Failed to load user info:', error);
+            }
+        }
+
+        async function loadFamilyProfile() {
+            try {
+                if (!currentUser || !currentUser.familyId) {
+                    // Show create family form
+                    showCreateFamilyForm();
+                    return;
+                }
+
+                const response = await fetch(`/api/families/${currentUser.familyId}`);
+                if (response.ok) {
+                    currentFamily = await response.json();
+                    displayFamilyInfo(currentFamily);
+                    updateStats();
+                }
+            } catch (error) {
+                console.error('Failed to load family profile:', error);
+            }
+        }
+
+        function displayFamilyInfo(family) {
+            // Update header
+            document.getElementById('familyName').textContent = family.family_name || 'Not Set';
+            document.getElementById('headOfFamily').textContent = family.head_of_family || 'Not Set';
+            document.getElementById('locationInfo').textContent = `${family.sector || 'Not Set'}, ${family.cell || 'Not Set'}`;
+
+            // Update form fields
+            document.getElementById('family_name').value = family.family_name || '';
+            document.getElementById('head_of_family').value = family.head_of_family || '';
+            document.getElementById('phone_number').value = family.phone_number || '';
+            document.getElementById('email').value = family.email || '';
+            document.getElementById('sector').value = family.sector || '';
+            document.getElementById('cell').value = family.cell || '';
+            document.getElementById('village').value = family.village || '';
+            document.getElementById('address').value = family.address || '';
+
+            // Update display fields
+            document.getElementById('display_family_name').textContent = family.family_name || 'Not Set';
+            document.getElementById('display_head_of_family').textContent = family.head_of_family || 'Not Set';
+            document.getElementById('display_phone_number').textContent = family.phone_number || 'Not Set';
+            document.getElementById('display_email').textContent = family.email || 'Not Set';
+            document.getElementById('display_sector').textContent = family.sector || 'Not Set';
+            document.getElementById('display_cell').textContent = family.cell || 'Not Set';
+            document.getElementById('display_village').textContent = family.village || 'Not Set';
+            document.getElementById('display_address').textContent = family.address || 'Not Set';
+        }
+
+        async function updateStats() {
+            try {
+                if (!currentUser || !currentUser.familyId) return;
+
+                // Load members count
+                const membersResponse = await fetch(`/api/families/${currentUser.familyId}/members`);
+                if (membersResponse.ok) {
+                    const members = await membersResponse.json();
+                    document.getElementById('memberCount').textContent = members.length;
+                }
+
+                // Load contracts count
+                const contractsResponse = await fetch(`/api/families/${currentUser.familyId}/contracts`);
+                if (contractsResponse.ok) {
+                    const contracts = await contractsResponse.json();
+                    document.getElementById('contractCount').textContent = contracts.length;
+                }
+            } catch (error) {
+                console.error('Failed to update stats:', error);
+            }
+        }
+
+        function showCreateFamilyForm() {
+            document.getElementById('familyForm').style.display = 'block';
+            document.getElementById('familyInfoDisplay').style.display = 'none';
+            document.querySelector('.profile-card').style.display = 'none';
+        }
+
+        function editMode() {
+            document.getElementById('familyForm').style.display = 'block';
+            document.getElementById('familyInfoDisplay').style.display = 'none';
+        }
+
+        function cancelEdit() {
+            document.getElementById('familyForm').style.display = 'none';
+            document.getElementById('familyInfoDisplay').style.display = 'block';
+        }
+
+        document.getElementById('familyForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const familyData = Object.fromEntries(formData);
+            
+            try {
+                let response;
+                if (currentUser && currentUser.familyId) {
+                    // Update existing family
+                    response = await fetch(`/api/families/${currentUser.familyId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(familyData)
+                    });
+                } else {
+                    // Create new family
+                    response = await fetch('/api/families', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(familyData)
+                    });
+                }
+
+                if (response.ok) {
+                    alert('Family profile saved successfully!');
+                    location.reload();
+                } else {
+                    const error = await response.json();
+                    alert('Error: ' + error.error);
+                }
+            } catch (error) {
+                console.error('Failed to save family:', error);
+                alert('Failed to save family profile. Please try again.');
+            }
+        });
+
+        async function logout() {
+            try {
+                await fetch('/api/auth/logout', { method: 'POST' });
+                window.location.href = '/system/login';
+            } catch (error) {
+                console.error('Logout failed:', error);
+            }
+        }
+    </script>
+</body>
+</html>
